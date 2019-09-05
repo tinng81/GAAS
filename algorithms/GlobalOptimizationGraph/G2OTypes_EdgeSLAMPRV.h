@@ -1,3 +1,5 @@
+#ifndef G2OTYPES_EDGESLAMPRV_H
+#define G2OTYPES_EDGESLAMPRV_H
 //Part1. IMUPreIntegration structure declaration.
 class IMUPreIntegration {
     public:
@@ -187,8 +189,12 @@ class IMUPreIntegration {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
         EdgeSLAMPRV(const Vector3d &gw) : BaseMultiEdge<9, IMUPreIntegration>(), GravityVec(gw) {
+            resize(4);
+        }/*
+        EdgeSLAMPRV(): BaseMultiEdge<9, IMUPreIntegration>()
+        {
             resize(6);
-        }
+        }*/
 
         bool read(std::istream &is) override { return true; }
 
@@ -251,7 +257,8 @@ class IMUPreIntegration {
             //this line includes correction term of bias change
 
         // residual error of Delta Rotation measurement
-        const Matrix3d dR_dbg = SO3d::exp(M.getJRBiasg() * dBgi).matrix();
+        //const Matrix3d dR_dbg = SO3d::exp(M.getJRBiasg() * dBgi).matrix();
+        const Matrix3d dR_dbg = Matrix3d::Identity(3,3);
         const Matrix3d rRij = (dRij * dR_dbg).inverse() * RiT * Rj;
         const Vector3d rPhiij = SO3d::log(rRij);
 
@@ -403,3 +410,4 @@ class IMUPreIntegration {
         //_jacobianOplus[4] = JBiasG;
         //_jacobianOplus[5] = JBiasA;
     }
+#endif

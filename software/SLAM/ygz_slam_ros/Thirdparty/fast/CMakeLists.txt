@@ -25,7 +25,7 @@ SET(CMAKE_BUILD_TYPE Release) # Options:  Debug, RelWithDebInfo, Release
 SET(CMAKE_CXX_FLAGS "-Wall -Werror ")
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O0 -g")
 IF(IS_ARM)
-  SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -march=armv7-a")
+  SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -ffast-math -march=armv8-a+crypto -mcpu=cortex-a57+crypto")
 ELSE()
   SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3 -mmmx -msse -msse -msse2 -msse3 -mssse3 -fomit-frame-pointer")
 ENDIF()
@@ -35,7 +35,7 @@ SET(SOURCES  ${PROJECT_SOURCE_DIR}/src/fast_10.cpp
              ${PROJECT_SOURCE_DIR}/src/fast_10_score.cpp
              ${PROJECT_SOURCE_DIR}/src/nonmax_3x3.cpp)
 IF(IS_ARM)
-#  LIST(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/faster_corner_9_neon.cpp)
+  # LIST(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/faster_corner_9_neon.cpp)
 ELSE()
   LIST(APPEND SOURCES ${PROJECT_SOURCE_DIR}/src/faster_corner_10_sse.cpp)
 ENDIF()
